@@ -1,30 +1,29 @@
 from typing import Optional, List, Iterator
-from celery import Celery  # noqa
+from celery import Celery
 import requests
 from bs4 import BeautifulSoup
 from urllib.parse import urljoin
 import itertools
 from celery import chain, chord, group
+from app.celery import celery
 
-app = Celery("tasks", backend="redis://localhost", broker="redis://localhost:6379/0")
 
-
-@app.task
+@celery.task
 def add(x, y):
     return x + y
 
 
-@app.task
+@celery.task
 def mul(x, y):
     return x * y
 
 
-@app.task
+@celery.task
 def xsum(numbers):
     return sum(numbers)
 
 
-@app.task
+@celery.task
 def get_wikilinks(url: str, session: "requests.sessions.Session" = None) -> List[str]:
     response = session.get(url) if session else requests.get(url)
     if response.ok:
@@ -44,7 +43,7 @@ def get_wikilinks(url: str, session: "requests.sessions.Session" = None) -> List
         return []
 
 
-@app.task
+@celery.task
 def get_article_name(
     url: str, session: "requests.sessions.Session" = None
 ) -> Optional[str]:
@@ -56,7 +55,7 @@ def get_article_name(
         return None
 
 
-@app.task
+@celery.task
 def check_if_target_reached(
     url: str, target: str, session: "requests.sessions.Session" = None
 ) -> bool:
@@ -64,7 +63,7 @@ def check_if_target_reached(
     return name == target
 
 
-@app.task
+@celery.task
 def concatenate_lists_of_urls(list2d: List[List[str]]) -> List[str]:
     return list(itertools.chain(*list2d))
 

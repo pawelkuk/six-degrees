@@ -135,3 +135,6 @@ dmypy.json
 data.db
 
 *.csv
+
+app.db
+six_degrees.log*
