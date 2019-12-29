@@ -1,4 +1,4 @@
-from tasks import get_wikilinks, get_article_name, check_if_target_reached
+from app.celery.tasks import get_wikilinks, get_article_name, check_if_target_reached
 from betamax import Betamax
 
 with Betamax.configure() as config:

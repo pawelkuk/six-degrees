@@ -1,4 +1,4 @@
-from tasks import concatenate_lists_of_urls
+from app.celery.tasks import concatenate_lists_of_urls
 
 
 def test_list_concat():

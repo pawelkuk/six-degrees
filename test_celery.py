@@ -1,5 +1,5 @@
 from celery import group
-from tasks import find_path, find_path_with_sessions
+from app.celery.tasks import find_path, find_path_with_sessions
 from time import time
 
 
