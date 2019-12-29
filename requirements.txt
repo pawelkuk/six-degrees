@@ -18,3 +18,5 @@ Flask-Moment==0.9.0
 flask-shell-ipython==0.4.1
 Flask-SQLAlchemy==2.4.1
 Flask-WTF==0.14.2
+python-dotenv==0.10.3
+
