@@ -11,7 +11,7 @@ def test_wikilinks_returns_list_of_urls(session):
         vcr.use_cassette("adolf")
         res = get_wikilinks(url=url, session=session)
         assert type(res) == list
-        assert len(res) == 2653
+        assert len(res) == 2654
 
 
 def test_wikilinks_returns_empty_list(session):

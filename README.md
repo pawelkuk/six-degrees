@@ -7,3 +7,4 @@
 - Assuming a fresh virtual environment: `pip install -r requirements.txt`
 - Run a celery worker: `celery worker -A celery_worker.celery --loglevel=info`
 - Run the development server in debug mode: `flask run`
+- To run tests type: `pytest` in the project root directory 
