@@ -1,17 +1,27 @@
 {% extends 'bootstrap/base.html' %}
 
 {% block title %}
-    Change Title
+    Six Degrees
 {% endblock %}
 
-{% block navbar %}
+<!-- {% block navbar %}
   
-{% endblock %}
+{% endblock %} -->
+
 
 {% block content %}
-        {# application content needs to be provided in the app_content block #}
-        {% block app_content %}{% endblock %}
-    </div>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <ul>
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    {% endwith %}
+
+    {# application content needs to be provided in the app_content block #}
+    {% block app_content %}{% endblock %}
 {% endblock %}
 
 {% block scripts %}
