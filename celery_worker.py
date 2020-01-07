@@ -1,10 +1,9 @@
-import os
-from app import celery, create_app
+from app import celery, create_app  # noqa
 
 app = create_app()
 app.app_context().push()
 
-from app.celery.tasks import (
+from app.celery.tasks import (  # noqa
     xsum,
     add,
     mul,

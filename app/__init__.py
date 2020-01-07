@@ -1,7 +1,7 @@
 import logging
-from logging.handlers import SMTPHandler, RotatingFileHandler
+from logging.handlers import RotatingFileHandler
 import os
-from flask import Flask, request, current_app
+from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_bootstrap import Bootstrap
@@ -12,7 +12,9 @@ db = SQLAlchemy()
 migrate = Migrate()
 bootstrap = Bootstrap()
 celery = Celery(
-    __name__, broker=Config.CELERY_BROKER_URL, backend=Config.CELERY_RESULT_BACKEND
+    __name__,
+    broker=Config.CELERY_BROKER_URL,
+    backend=Config.CELERY_RESULT_BACKEND,
 )
 
 
@@ -41,7 +43,8 @@ def create_app(config_class=Config):
         )
         file_handler.setFormatter(
             logging.Formatter(
-                "%(asctime)s %(levelname)s: %(message)s " "[in %(pathname)s:%(lineno)d]"
+                "%(asctime)s %(levelname)s: %(message)s "
+                "[in %(pathname)s:%(lineno)d]"
             )
         )
         file_handler.setLevel(logging.INFO)
@@ -53,4 +56,4 @@ def create_app(config_class=Config):
     return app
 
 
-from app import models, errors
+from app import models, errors  # noqa

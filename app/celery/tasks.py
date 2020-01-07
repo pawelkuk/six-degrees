@@ -1,10 +1,10 @@
 from typing import Optional, List, Iterator
-from celery import Celery
+from celery import Celery  # noqa
 import requests
 from bs4 import BeautifulSoup
 from urllib.parse import urljoin
 import itertools
-from celery import chain, chord, group
+from celery import group
 from app.celery import celery
 
 
@@ -24,7 +24,9 @@ def xsum(numbers):
 
 
 @celery.task
-def get_wikilinks(url: str, session: "requests.sessions.Session" = None) -> List[str]:
+def get_wikilinks(
+    url: str, session: "requests.sessions.Session" = None
+) -> List[str]:
     response = session.get(url) if session else requests.get(url)
     if response.ok:
         soup = BeautifulSoup(response.text, "html.parser")
@@ -70,7 +72,6 @@ def concatenate_lists_of_urls(list2d: List[List[str]]) -> List[str]:
 
 def find_path(source_url: str, target_url: str) -> bool:
     flag = False
-    source = get_article_name(source_url)
     target = get_article_name(target_url)
     input_urls = [source_url]
     for _ in range(6):
@@ -89,11 +90,12 @@ def find_path(source_url: str, target_url: str) -> bool:
 def find_path_with_sessions(source_url: str, target_url: str) -> bool:
     flag = False
     session = requests.session()
-    source = get_article_name(source_url, session=session)
     target = get_article_name(target_url, session=session)
     input_urls = [source_url]
     for _ in range(6):
-        url_2dlist = [get_wikilinks(input_, session=session) for input_ in input_urls]
+        url_2dlist = [
+            get_wikilinks(input_, session=session) for input_ in input_urls
+        ]
         flat_url_list = concatenate_lists_of_urls(url_2dlist)
         check_list = [
             check_if_target_reached(url, target, session=session)

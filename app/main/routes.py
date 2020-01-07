@@ -9,7 +9,7 @@ def index():
     form = WikiNodesForm()
     if form.validate_on_submit():
         flash(
-            f"This is the data you've sent: {form.source.data}, {form.destination.data}"
+            f"This is the data you've sent: {form.source.data}, {form.destination.data}"  # noqa
         )
         return redirect("/index")
     return render_template("index.html", title="Home", form=form)

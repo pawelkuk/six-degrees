@@ -1,4 +1,8 @@
-from app.celery.tasks import get_wikilinks, get_article_name, check_if_target_reached
+from app.celery.tasks import (
+    get_wikilinks,
+    get_article_name,
+    check_if_target_reached,
+)
 from betamax import Betamax
 
 with Betamax.configure() as config:
@@ -49,4 +53,4 @@ def test_check_resturns_proper_value(session):
     with Betamax(session) as vcr:
         vcr.use_cassette("adolf")
         res = check_if_target_reached(url, "Adolf Hitler", session=session)
-        assert res == True
+        assert res is True

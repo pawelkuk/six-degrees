@@ -1,2 +1,1 @@
-import os
-from app import celery
+from app import celery  # noqa
