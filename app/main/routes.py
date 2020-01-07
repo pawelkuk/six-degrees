@@ -8,6 +8,8 @@ from flask import render_template, flash, redirect
 def index():
     form = WikiNodesForm()
     if form.validate_on_submit():
-        flash(f"This is the data you've sent: {form.source.data}, {form.destination.data}")
-        return redirect('/index')
+        flash(
+            f"This is the data you've sent: {form.source.data}, {form.destination.data}"
+        )
+        return redirect("/index")
     return render_template("index.html", title="Home", form=form)

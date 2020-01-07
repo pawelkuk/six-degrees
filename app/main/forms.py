@@ -6,4 +6,4 @@ from wtforms.validators import DataRequired
 class WikiNodesForm(FlaskForm):
     source = StringField(label="Source site", validators=[DataRequired()])
     destination = StringField(label="Destinatoin site", validators=[DataRequired()])
-    submit = SubmitField(label='Search')
+    submit = SubmitField(label="Search")
