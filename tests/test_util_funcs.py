@@ -1,27 +1,25 @@
-from app.celery.tasks import concatenate_lists_of_urls
+from app.celery.tasks import flatten_pages
+from app.wiki import wiki
 
 
 def test_list_concat():
     input_ = [
-        ["url1", "url2", "url3"],
-        ["url1", "url2", "url3"],
-        ["url1", "url2", "url3"],
+        [wiki.Page("1", "1", ["1", "2"]), wiki.Page("2", "2", ["1", "2"])],
+        [wiki.Page("3", "3", ["1", "2"]), wiki.Page("4", "4", ["1", "2"])],
+        [wiki.Page("5", "5", ["1", "2"]), wiki.Page("6", "6", ["1", "2"])],
     ]
     expected_output = [
-        "url1",
-        "url2",
-        "url3",
-        "url1",
-        "url2",
-        "url3",
-        "url1",
-        "url2",
-        "url3",
+        wiki.Page("1", "1", ["1", "2"]),
+        wiki.Page("2", "2", ["1", "2"]),
+        wiki.Page("3", "3", ["1", "2"]),
+        wiki.Page("4", "4", ["1", "2"]),
+        wiki.Page("5", "5", ["1", "2"]),
+        wiki.Page("6", "6", ["1", "2"]),
     ]
-    res = concatenate_lists_of_urls(input_)
-    assert len(res) == 9
+    res = flatten_pages(input_)
+    assert len(res) == 6
     assert res == expected_output
 
 
 def test_list_concat_corner_cases():
-    assert concatenate_lists_of_urls([[]]) == []
+    assert flatten_pages([[]]) == []
