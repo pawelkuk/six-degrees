@@ -138,3 +138,7 @@ data.db
 
 app.db
 six_degrees.log*
+
+
+# Pictures
+*.png
