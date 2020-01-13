@@ -1,5 +1,5 @@
-from typing import Optional, List, Iterator
-from celery import Celery  # noqa
+from typing import Optional, List, Iterator, Dict, Callable
+from celery import Celery # noqa
 import requests
 from bs4 import BeautifulSoup
 from urllib.parse import urljoin
@@ -8,27 +8,32 @@ from celery import group
 from app.celery import celery
 from app.wiki import wiki
 from re import compile
+import wikipedia
 
 
 @celery.task
-def add(x, y):
-    return x + y
-
-
-@celery.task
-def mul(x, y):
-    return x * y
-
-
-@celery.task
-def xsum(numbers):
-    return sum(numbers)
+def get_page_with_api(title: str) -> Dict:
+    page = None
+    try:
+        page = wikipedia.page(
+            title=title, pageid=None, auto_suggest=True, redirect=True
+        )
+    except wikipedia.DisambiguationError as e:
+        title = e.options[0]
+        page = wikipedia.page(
+            title=title, pageid=None, auto_suggest=True, redirect=True
+        )
+    except wikipedia.PageError as e:
+        return None
+    finally:
+        return {"title": page.title, "url": page.url, "links": page.links}
 
 
 @celery.task
 def get_page(
-    url: str, session: "requests.sessions.Session" = None
-) -> wiki.Page(str, str, List[str]):
+    url: str,
+    session: "requests.sessions.Session" = None
+) -> Dict:
     response = session.get(url) if session else requests.get(url)
     if response.ok:
         soup = BeautifulSoup(response.text, "html.parser")
@@ -39,37 +44,33 @@ def get_page(
             lambda x: urljoin(wiki.BASE_URL, x.get("href")), urls
         )
         title = soup.find(id="firstHeading").get_text()
-        return wiki.Page(title, url, list(valid_urls))
+        return {"title": title, "url": url, "links": list(valid_urls)}
     else:
         return None
 
 
 @celery.task
-def check_if_target_reached(page: wiki.Page, target: str) -> bool:
-    return page.title == target
+def check_if_target_reached(page: Dict, target: Dict, field: str) -> bool:
+    return page[field] == target[field]
 
 
-@celery.task
-def flatten_pages(list2d: List[List[wiki.Page]]) -> List[wiki.Page]:
-    return list(itertools.chain(*list2d))
-
-
-def find_path(
-    source_url: str,
-    target_url: str,
-    session: "requests.sessions.Session" = None,
-) -> bool:
-    session = requests.session()
-    target = get_page(target_url, session=session)
-    input_urls = [source_url]
-    for _ in range(6):
-        page_2dlist = get_page.map(input_urls, session=session).delay().get()
-        flat_page_list = flatten_pages(page_2dlist)
+def download_pages(
+    download_func: Callable, source: str, target: str, field: str, **kwargs
+):
+    target = download_func(source, **kwargs)
+    source = download_func(target, **kwargs)
+    input_pages = [source]
+    all_pages = [source]
+    iteration = 0
+    while True:
+        links = [l for page in input_pages for l in page["links"]]
+        pages = group(download_func.s(link) for link in links)().get()
+        all_pages.extend(pages)
         check_list = group(
-            check_if_target_reached.s(url, target) for url in flat_page_list
+            check_if_target_reached.s(page, target, field) for page in pages
         )().get()
-        if any(check_list):
-            return True
-        input_urls = flat_page_list
-    return False
-
+        if any(check_list) or iteration == 6:
+            break
+        input_pages = pages
+        iteration += 1
+    return all_pages
