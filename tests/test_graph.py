@@ -1,5 +1,5 @@
 from app.graph import graph
-import izgraph as ig
+import igraph as ig
 
 
 def test_init():

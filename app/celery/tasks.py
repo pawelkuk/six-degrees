@@ -7,6 +7,7 @@ import itertools
 from celery import group
 from app.celery import celery
 from app.wiki import wiki
+from app.wiki.wiki import get_wiki_page
 from re import compile
 
 
@@ -31,15 +32,7 @@ def get_page(
 ) -> wiki.Page(str, str, List[str]):
     response = session.get(url) if session else requests.get(url)
     if response.ok:
-        soup = BeautifulSoup(response.text, "html.parser")
-        urls = soup.find(id="content").findAll(
-            "a", attrs={"href": compile(wiki.PATTERN)}
-        )
-        valid_urls: Iterator[str] = map(
-            lambda x: urljoin(wiki.BASE_URL, x.get("href")), urls
-        )
-        title = soup.find(id="firstHeading").get_text()
-        return wiki.Page(title, url, list(valid_urls))
+        return get_wiki_page(response)
     else:
         return None
 
@@ -72,4 +65,3 @@ def find_path(
             return True
         input_urls = flat_page_list
     return False
-

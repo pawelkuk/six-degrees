@@ -2,8 +2,8 @@ from app.celery.tasks import find_path, find_path_with_sessions
 from time import time
 
 
-# target_url = 'https://en.wikipedia.org/wiki/Deflection_(engineering)'
-target_url = "https://en.wikipedia.org/wiki/Castigliano%27s_method"
+target_url = "https://en.wikipedia.org/wiki/Deflection_(engineering)"
+# target_url = "https://en.wikipedia.org/wiki/Castigliano%27s_method"
 source_url = "https://en.wikipedia.org/wiki/Span_(engineering)"
 
 
