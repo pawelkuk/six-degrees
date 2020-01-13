@@ -1,4 +1,3 @@
-import igraph as ig
 from igraph import Graph
 from typing import Dict, List
 

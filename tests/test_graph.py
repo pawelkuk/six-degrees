@@ -1,6 +1,5 @@
 from app.graph import graph
-import izgraph as ig
-
+from igraph.drawing import plot
 
 def test_init():
 
@@ -45,7 +44,7 @@ def test_init():
             for e in net.get_edgelist()
         ],
     }
-    ig.plot(
+    plot(
         net,
         f"tests/test_graph_init.png",
         **visual_style,
