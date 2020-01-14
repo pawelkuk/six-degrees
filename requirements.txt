@@ -23,3 +23,5 @@ wikipedia==1.4.0
 ioahttp
 python-igraph==0.7.1.post6
 wikipedia
+pycairo==1.18.2
+
