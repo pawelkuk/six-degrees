@@ -1,5 +1,5 @@
 from typing import Optional, List, Iterator, Dict, Callable
-from celery import Celery # noqa
+from celery import Celery  # noqa
 import requests
 from bs4 import BeautifulSoup
 from urllib.parse import urljoin
@@ -31,10 +31,7 @@ def get_page_with_api(title: str) -> Dict:
 
 
 @celery.task
-def get_page(
-    url: str,
-    session: "requests.sessions.Session" = None
-) -> Dict:
+def get_page(url: str, session: "requests.sessions.Session" = None) -> Dict:
     response = session.get(url) if session else requests.get(url)
     if response.ok:
         return get_wiki_page(response).__dict__

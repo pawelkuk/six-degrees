@@ -1,6 +1,7 @@
 from app.graph import graph
 from igraph.drawing import plot
 
+
 def test_init():
 
     net = graph.PageNetwork()
