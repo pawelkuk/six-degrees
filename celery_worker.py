@@ -4,11 +4,8 @@ app = create_app()
 app.app_context().push()
 
 from app.celery.tasks import (  # noqa
-    xsum,
-    add,
-    mul,
     check_if_target_reached,
-    concatenate_lists_of_urls,
-    get_article_name,
-    get_wikilinks,
+    get_page,
+    get_page_with_api,
+    download_pages
 )

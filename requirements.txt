@@ -20,5 +20,6 @@ Flask-SQLAlchemy==2.4.1
 Flask-WTF==0.14.2
 python-dotenv==0.10.3
 wikipedia==1.4.0
+ioahttp
 python-igraph==0.7.1.post6
 
