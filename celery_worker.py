@@ -7,5 +7,5 @@ from app.celery.tasks import (  # noqa
     check_if_target_reached,
     get_page,
     get_page_with_api,
-    download_pages
+    download_pages,
 )

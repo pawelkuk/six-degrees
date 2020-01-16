@@ -2,7 +2,7 @@ from app.celery.tasks import (
     check_if_target_reached,
     get_page_with_api,
     get_page,
-    download_pages
+    download_pages,
 )
 from betamax import Betamax
 
@@ -51,7 +51,7 @@ def test_get_page_returns_proper_values(session):
 def test_get_page_api(session):
     title = "hitler"
     page = get_page_with_api(title)
-    assert page["title"] == 'Adolf Hitler'
+    assert page["title"] == "Adolf Hitler"
     assert page["url"] == "https://en.wikipedia.org/wiki/Adolf_Hitler"
     assert isinstance(page["links"], list)
 

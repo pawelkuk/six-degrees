@@ -8,6 +8,7 @@ from urllib.parse import urljoin
 BASE_URL = "https://en.wikipedia.org"
 PATTERN = "^/wiki/(?![a-zA-Z]+:)"
 
+
 @dataclass
 class Page:
     title: str
