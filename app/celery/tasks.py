@@ -96,6 +96,7 @@ def download_pages(
             break
         links = [l for page in input_pages if page for l in page["links"]]
         input_pages = group(download_func.s(link) for link in links)().get()
+        # input_pages = [download_func(link) for link in links]
         all_pages.extend(input_pages)
         iteration += 1
     return all_pages
