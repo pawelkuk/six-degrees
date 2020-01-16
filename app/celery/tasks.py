@@ -10,11 +10,14 @@ from app.wiki import wiki
 from app.wiki.wiki import get_wiki_page
 from re import compile
 import wikipedia
+import logging
 
 
 @celery.task
-def get_page_with_api(title: str) -> Dict:
+def get_page_with_api(title: str) -> Optional[Dict]:
     page = None
+    if title is None:
+        return None
     try:
         page = wikipedia.page(
             title=title, pageid=None, auto_suggest=True, redirect=True
@@ -25,9 +28,42 @@ def get_page_with_api(title: str) -> Dict:
             title=title, pageid=None, auto_suggest=True, redirect=True
         )
     except wikipedia.PageError as e:
+        logging.basicConfig(level=logging.DEBUG)
+        logging.error(
+            msg="PageError while getting page from wikipedia.", exc_info=True
+        )
         return None
-    finally:
+    except wikipedia.HTTPTimeoutError as e:
+        logging.basicConfig(level=logging.DEBUG)
+        logging.error(
+            msg="HTTPTimeoutError while getting page from wikipedia.",
+            exc_info=True,
+        )
+        return None
+    except wikipedia.RedirectError as e:
+        logging.basicConfig(level=logging.DEBUG)
+        logging.error(
+            msg="RedirectError while getting page from wikipedia.",
+            exc_info=True,
+        )
+        return None
+    except wikipedia.DisambiguationError as e:
+        logging.basicConfig(level=logging.DEBUG)
+        logging.error(
+            msg="DisambiguationError while getting page from wikipedia.",
+            exc_info=True,
+        )
+    except Exception as e:
+        logging.basicConfig(level=logging.DEBUG)
+        logging.error(
+            msg="Unidentified while getting page from wikipedia.",
+            exc_info=True,
+        )
+        return None
+    if page:
         return {"title": page.title, "url": page.url, "links": page.links}
+    else:
+        return None
 
 
 @celery.task
@@ -45,22 +81,21 @@ def check_if_target_reached(page: Dict, target: Dict, field: str) -> bool:
 
 
 def download_pages(
-    download_func: Callable, source: str, target: str, field: str, **kwargs
+    download_func: Callable, source_: str, target: str, field: str, **kwargs
 ):
-    target = download_func(source, **kwargs)
-    source = download_func(target, **kwargs)
-    input_pages = [source]
-    all_pages = [source]
+    target = download_func(target, **kwargs)
+    source_ = download_func(source_, **kwargs)
+    input_pages = [source_]
+    all_pages = [source_]
     iteration = 0
     while True:
-        links = [l for page in input_pages for l in page["links"]]
-        pages = group(download_func.s(link) for link in links)().get()
-        all_pages.extend(pages)
-        check_list = group(
-            check_if_target_reached.s(page, target, field) for page in pages
-        )().get()
-        if any(check_list) or iteration == 6:
+        if (
+            any([target[field] in page["links"] for page in input_pages])
+            or iteration == 6
+        ):
             break
-        input_pages = pages
+        links = [l for page in input_pages if page for l in page["links"]]
+        input_pages = group(download_func.s(link) for link in links)().get()
+        all_pages.extend(input_pages)
         iteration += 1
     return all_pages
