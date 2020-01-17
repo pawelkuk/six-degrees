@@ -11,7 +11,7 @@ class PageNetwork(DiGraph):
 
     def addNodes(self, pages: List[Dict], field: str = "url"):
         """
-        Select subset of pages with unique values in `field` and 
+        Select subset of pages with unique values in `field` and
         add them to graph.
         """
         nodes = list(set(p[field] for p in pages))
@@ -22,8 +22,8 @@ class PageNetwork(DiGraph):
     ):
         """
         Create edges between `pages`. `Source` field specifies node name,
-        `target` specifies names of adjacent nodes. If `target` does not 
-        exist in list of pages field `source` then new node is created.  
+        `target` specifies names of adjacent nodes. If `target` does not
+        exist in list of pages field `source` then new node is created.
         """
         nodes = list(self.nodes)
         # List of unique edges as tuples: (source, target)
