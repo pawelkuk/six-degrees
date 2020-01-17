@@ -5,8 +5,8 @@ mypy==0.740
 pytest==5.3.1
 redis==3.3.11
 typing==3.7.4.1
-requests
-black
+requests==2.22.0
+black==19.10b0
 Flask==1.1.1
 Flask-Babel==0.12.2
 flask-blocks==1.0.20
@@ -20,8 +20,9 @@ Flask-SQLAlchemy==2.4.1
 Flask-WTF==0.14.2
 python-dotenv==0.10.3
 wikipedia==1.4.0
-ioahttp
-python-igraph==0.7.1.post6
-wikipedia
+aiohttp==3.6.2
+cairocffi==1.1.0
 pycairo==1.18.2
-cairocffi
+python-igraph==0.7.1.post6
+pyvis==0.1.7.0
+networkx==2.4

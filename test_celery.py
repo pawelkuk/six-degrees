@@ -1,4 +1,5 @@
 from app.celery.tasks import download_pages, get_page, get_page_with_api
+from app.graphs import graph, network
 from time import time
 import pickle
 
@@ -40,5 +41,17 @@ def test_download_pages(source, target):
     assert type(pages) == list
 
 
-test_download_pages_with_api(source, target_1_step)
-test_download_pages(source_url, target_url_2)
+@timeit
+def test_download_pages_network(source, target):
+    pages = download_pages(get_page, source, target, "url")
+    print("Download complete")
+    net = network.PageNetwork()
+    net.addNodes(pages, "url")
+    net.addEdges(pages, source="url", target="links")
+    print("Network initialized")
+    net.plotNetwork(source, target)
+
+
+# test_download_pages_with_api(source, target_1_step)
+# test_download_pages(source_url, target_url_2)
+test_download_pages_network(source_url, target_url_2)
