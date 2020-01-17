@@ -34,7 +34,8 @@ class PageNetwork(Graph):
         # List of unique edges as tuples: (source, target)
         edges = [(page[source], tar) for page in pages for tar in page[target]]
         edges = list(set(edges))
-        # If target in list of edges does not exist in list of nodes create new node
+        # If target in list of edges does not exist in list of
+        #  nodes create new node
         new_nodes = [(e[1], e[0]) for e in edges if e[1] not in nodes]
         # self.add_vertices({"title": "", "url": e[1], "link": })
         new_nodes.sort(key=lambda x: x[0])

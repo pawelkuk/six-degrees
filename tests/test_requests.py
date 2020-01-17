@@ -59,7 +59,9 @@ def test_get_page_api(session):
 # def test_download_pages_with_api(session):
 #     source = "hitler"
 #     target = "nazi party"
-#     pages = download_pages(get_page_with_api, source=source, target=target, field="title")
+#     pages = download_pages(
+#         get_page_with_api, source=source, target=target, field="title"
+#     )
 #     assert isinstance(pages, list)
 #     print(pages)
 
@@ -67,6 +69,8 @@ def test_get_page_api(session):
 # def test_download_pages(session):
 #     source = "https://en.wikipedia.org/wiki/Adolf_Hitler"
 #     target = "https://en.wikipedia.org/wiki/Nazi_Party"
-#     pages = download_pages(get_page, source=source, target=target, field="title", session=session)
+#     pages = download_pages(
+#        get_page, source=source, target=target, field="title", session=session
+#     )
 #     assert isinstance(pages, list)
 #     print(pages)

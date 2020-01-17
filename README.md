@@ -8,3 +8,7 @@
 - Run a celery worker: `celery worker -A celery_worker.celery --loglevel=info`
 - Run the development server in debug mode: `flask run`
 - To run tests type: `pytest` in the project root directory 
+
+### Dev info
+ 
+- To run the async version of the scraper type: `python wiki_scraper.py` in the root directory

@@ -56,4 +56,4 @@ def create_app(config_class=Config):
     return app
 
 
-from app import models, errors  # noqa
+from app import models, errors, wiki, celery  # noqa
