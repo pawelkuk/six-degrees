@@ -100,20 +100,3 @@ class PageNetwork(Graph):
                 bbox=bbox,
                 autocurve=True,
             )
-
-
-if __name__ == "__main__":
-    net = PageNetwork()
-    pages = [
-        {"title": "00", "url": "0", "links": ["1", "3", "5", "7"]},
-        {"title": "00", "url": "0", "links": ["1"]},
-        {"title": "01", "url": "1", "links": ["0", "2", "3", "7"]},
-        {"title": "02", "url": "2", "links": ["0", "3", "6"]},
-        {"title": "03", "url": "3", "links": ["4", "1"]},
-        {"title": "04", "url": "4", "links": ["2"]},
-        {"title": "05", "url": "5", "links": ["4"]},
-    ]
-
-    net.addNodes(pages, "url")
-    net.addEdges(pages, source="url", target="links")
-    net.plotNetwork(pages[0], pages[4])
