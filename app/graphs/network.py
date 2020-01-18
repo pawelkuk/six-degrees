@@ -74,5 +74,48 @@ class PageNetwork(DiGraph):
                 ],
             )
             g.add_edges(edges)
-            g.barnes_hut()
+            g.set_options(
+                """ 
+                {
+	"nodes": {
+		"font": {
+			"size": 9
+		},
+		"scaling": {
+			"max": 36
+		},
+		"shadow": {
+			"enabled": true
+		}
+	},
+	"edges": {
+		"arrows": {
+			"to": {
+				"enabled": true,
+				"scaleFactor": 1.4
+			}
+		},
+		"smooth": false
+	},
+	"layout": {
+		"hierarchical": {
+			"enabled": true,
+			"sortMethod": "directed"
+		}
+	},
+	"interaction": {
+		"keyboard": {
+			"enabled": true
+		}
+	},
+	"physics": {
+		"hierarchicalRepulsion": {
+			"centralGravity": 0,
+			"nodeDistance": 225
+		},
+		"minVelocity": 0.75,
+		"solver": "hierarchicalRepulsion"
+	}
+}"""
+            )
             g.show(filename)
