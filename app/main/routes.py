@@ -4,10 +4,12 @@ from flask import render_template, flash, redirect
 from app.celery.tasks import download_pages, get_page, get_page_with_api
 from app.graphs import graph, network
 import re
+import json
 
 
 reg = re.compile(
-    r"[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)"
+    r"[-a-zA-Z0-9@:%._\+~#=]{1,256}\."
+    r"[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)"
 )
 
 
@@ -33,10 +35,23 @@ def index():
         net = network.PageNetwork()
         net.addNodes(pages, "url")
         net.addEdges(pages, source="url", target="links")
-        net.plotNetwork(
+        min_path_network = net.plotNetwork(
             source, target, size=(800, 1800), filename="graph.html"
         )
+        return render_template(
+            "index.html",
+            title="Home",
+            form=form,
+            nodes=json.dumps(min_path_network.nodes),
+            edges=json.dumps(min_path_network.edges),
+            options=json.dumps(min_path_network.options),
+        )
 
-        return redirect("/index")
-
-    return render_template("index.html", title="Home", form=form)
+    return render_template(
+        "index.html",
+        title="Home",
+        form=form,
+        nodes=None,
+        edges=None,
+        options=None,
+    )

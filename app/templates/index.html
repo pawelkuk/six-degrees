@@ -1,18 +1,73 @@
 {% extends "base.html" %}
 
-{% block app_content %}
-<h1>Choose sites to find the connection:</h1>
-<form action="" method="post" novalidate>
-    {{ form.hidden_tag() }}
-    <p>
-        {{ form.source.label }}<br>
-        {{ form.source(size=50) }}
-    </p>
-    <p>
-        {{ form.target.label }}<br>
-        {{ form.target(size=50) }}
-    </p>
-    <p>{{ form.submit() }}</p>
-</form>
+{% block scripts %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis.css" type="text/css" />
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis-network.min.js"> </script>
 
-{% endblock %}
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+
+<style type="text/css">
+    #mynetwork {
+        width: 1800;
+        height: 800;
+        background-color: #ffffff;
+        border: 1px solid lightgray;
+        position: relative;
+        float: left;
+    }
+</style>
+
+</head>
+
+<body>
+    <div id="mynetwork"></div>
+
+    <script type="text/javascript">
+
+        // initialize global variables.
+        var network;
+        var container;
+        var data;
+
+
+        // This method is responsible for drawing the graph, returns the drawn network
+        function drawGraph(nodes, edges, options) {
+            var container = document.getElementById('mynetwork');
+
+            // adding nodes and edges to the graph
+            data = { nodes: nodes, edges: edges };
+
+            network = new vis.Network(container, data, options);
+
+            return network;
+
+        }
+        var nodes = JSON.parse({{ nodes | tojson }});
+        var edges = JSON.parse({{ edges | tojson}});
+        var options = JSON.parse({{ options | tojson}});
+
+        if (nodes && edges && options) {
+            drawGraph(nodes, edges, options);
+        }
+
+    </script>
+    {% endblock %}
+
+    {% block app_content %}
+    <h1>Choose sites to find the connection:</h1>
+    <form action="" method="post" novalidate>
+        {{ form.hidden_tag() }}
+        <p>
+            {{ form.source.label }}<br>
+
+            {{ form.source(size=50) }}
+        </p>
+        <p>
+            {{ form.target.label }}<br>
+            {{ form.target(size=50) }}
+        </p>
+        <p>{{ form.submit() }}</p>
+    </form>
+
+    {% endblock %}
