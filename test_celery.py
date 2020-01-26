@@ -49,5 +49,5 @@ def test_download_pages_network(source, target):
 
 
 # test_download_pages_with_api(source, target_1_step)
-# test_download_pages(source_url, target_url_2)
-test_download_pages_network(source_url, target_url_2)
+test_download_pages(source_url, target_url_2)
+# test_download_pages_network(source_url, target_url_2)

@@ -7,6 +7,16 @@ from app.celery.tasks import get_page
 from concurrent.futures import ProcessPoolExecutor as Pool
 
 
+def timeit(func):
+    def wrapper(*args, **kwargs):
+        start = time()
+        result = func(*args, **kwargs)
+        print(time() - start)
+        return result
+
+    return wrapper
+
+
 async def calc_fibon(n, pool=None):
     loop = asyncio.get_event_loop()
     fib = await loop.run_in_executor(pool, fibon, n)
@@ -14,11 +24,12 @@ async def calc_fibon(n, pool=None):
     return fib
 
 
+@timeit
 async def async_download_pages(
     download_func: Callable, source_: str, target: str, field: str, **kwargs
 ):
     loop = asyncio.get_event_loop()
-    pool = Pool()
+    pool = Pool(20)
 
     target = await loop.run_in_executor(None, download_func, target, **kwargs)
     source_ = await loop.run_in_executor(
