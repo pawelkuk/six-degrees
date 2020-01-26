@@ -4,10 +4,6 @@ from time import time
 import pickle
 
 
-# source_url = "https://en.wikipedia.org/wiki/Adolf_Hitler"
-# target_url = "https://en.wikipedia.org/wiki/Nazi_Party"
-
-
 target_url = (
     "https://en.wikipedia.org/wiki/Conditional_probability_distribution"
 )
