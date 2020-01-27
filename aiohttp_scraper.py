@@ -67,10 +67,9 @@ async def async_download_pages(source_, target, field, **kwargs):
     all_pages = [source_]
     iteration = 0
     while True:
-        print("**")
         if (
             any([target[field] in page["links"] for page in input_pages])
-            or iteration == 6
+            or iteration == 5
         ):
             break
         links = [l for page in input_pages if page for l in page["links"]]
