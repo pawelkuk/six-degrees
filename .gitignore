@@ -142,3 +142,5 @@ six_degrees.log*
 
 # Pictures
 *.png
+
+*.ipynb
