@@ -23,7 +23,11 @@ df = pd.read_csv('scraper_data.csv')
 ```
 
 ```{python}
-df.groupby(['scraper', 'strony']).agg(['mean', 'std']).dropna()
+df.groupby(['scraper', 'strony']).agg(['mean']).dropna().unstack('scraper').plot()
+```
+
+```{python}
+
 ```
 
 ```{python}
