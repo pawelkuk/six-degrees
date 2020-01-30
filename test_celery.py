@@ -10,10 +10,8 @@ target_url = (
 target_url_2 = "https://en.wikipedia.org/wiki/Probability_mass_function"
 source_url = "https://en.wikipedia.org/wiki/Channel_capacity"
 
-source_url = "https://en.wikipedia.org/wiki/Adolf_Hitler"
-target_url_2 = (
-    "https://en.wikipedia.org/wiki/St._Augustine%27s_Monastery_(Erfurt)"
-)
+source_url = "https://en.wikipedia.org/wiki/August_Kubizek"
+target_url_2 = "https://en.wikipedia.org/wiki/Livonian_Order"
 
 target_2_steps = "probability mass function"
 target_1_step = "conditional probability distribution"

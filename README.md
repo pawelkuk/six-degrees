@@ -13,3 +13,4 @@
  
 - To run the async version of the scraper type: `python wiki_scraper.py` in the root directory
 - To run the aiohttp version of the scraper type: `python aiohttp_scraper.py` in the root directory
+- To delete all task from celery task queue type: `celery -A celery_worker.celery purge`
