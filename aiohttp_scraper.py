@@ -92,6 +92,11 @@ if __name__ == "__main__":
     target_url_2 = "https://en.wikipedia.org/wiki/Probability_mass_function"
     source_url = "https://en.wikipedia.org/wiki/Channel_capacity"
 
+    source_url = "https://en.wikipedia.org/wiki/Adolf_Hitler"
+    target_url_2 = (
+        "https://en.wikipedia.org/wiki/St._Augustine%27s_Monastery_(Erfurt)"
+    )
+
     start = time()
     pages = asyncio.run(async_download_pages(source_url, target_url_2, "url"))
     print(pages)
